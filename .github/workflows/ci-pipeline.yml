@@ -26,14 +26,11 @@ jobs:
     - name: Create artifacts folder
       run: mkdir -p devops-interview
 
-    - name: devops-interview
-      run: cd devops-interview
-
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
        name: my-artifacts
-       path: devops-interview/my-artifacts
+       path: devops-interview/ my-artifacts
     
     - name: Push to Docker Hub
       run: |
