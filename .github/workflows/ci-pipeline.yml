@@ -29,12 +29,12 @@ jobs:
     - name: devops-interview
       run: cd devops-interview
 
-    - name: Upload artifacts
+    - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
-          name: devops-interview
-          path: devops-interview/
-
+       name: my-artifacts
+       path: devops-interview/my-artifacts
+    
     - name: Push to Docker Hub
       run: |
         echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
