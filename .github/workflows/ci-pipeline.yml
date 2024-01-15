@@ -23,6 +23,17 @@ jobs:
         docker build -t emmylong1/devops-interview:v1 .
       env:
         DOCKER_BUILDKIT: 1
+    - name: Create artifacts folder
+      run: mkdir -p devops-interview
+
+    - name: devops-interview
+      run: cd devops-interview
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+          name: devops-interview
+          path: devops-interview/
 
     - name: Push to Docker Hub
       run: |
