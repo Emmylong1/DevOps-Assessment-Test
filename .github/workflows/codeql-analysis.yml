@@ -1,0 +1,91 @@
+name: Code Analysis
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  codeql:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: python
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          queries: security-and-quality,code-scanning
+
+  codeclimate:
+    name: CodeClimate Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: actions/setup-ruby@v2
+        with:
+          ruby-version: '2.x'
+
+      - name: Install CodeClimate CLI
+        run: |
+          gem install codeclimate-test-reporter
+          codeclimate --version
+
+      - name: Upload coverage report to CodeClimate
+        run: |
+          codeclimate-test-reporter before-build
+
+      - name: Run tests and coverage
+        run: |
+          # Replace this with your actual test command
+          pytest --cov=your_module
+
+      - name: Upload coverage report to CodeClimate
+        run: |
+          codeclimate-test-reporter after-build --exit-code $?
+
+  coverage:
+    name: Code Coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run tests and generate coverage report
+        run: |
+          # Replace this with your actual test command
+          pytest --cov=your_module
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
